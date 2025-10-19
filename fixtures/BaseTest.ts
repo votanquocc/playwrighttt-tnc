@@ -1,4 +1,4 @@
-import { test as base, Browser, Page } from '@playwright/test';//test as base để đổi tên test gốc của playwright
+import { test as base, Page } from '@playwright/test';//test as base để đổi tên test gốc của playwright
 
 type TestFixtures = {
   page: Page;
