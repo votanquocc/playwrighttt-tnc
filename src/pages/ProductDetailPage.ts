@@ -21,12 +21,20 @@ export class ProductDetailPage {
     const originPriceText = await this.originPrice.innerText();
     const salePriceText = await this.salePrice.innerText();
     const salePercentText = await this.salePercent.innerText();
-
+    console.log('Extracted texts:', { originPriceText, salePriceText, salePercentText });
     // Hàm parse an toàn
     const safeParse = (text: string | null) => {
         if (!text) return 0;
         
-        const cleaned = text.replace(/[^0-9.]/g, "");
+        // Loại bỏ tất cả ký tự không phải số và dấu chấm (giữ lại dấu chấm phân cách hàng nghìn)
+        let cleaned = text.replace(/[^0-9.]/g, "");
+        
+        // Nếu có nhiều hơn 1 dấu chấm, đây là định dạng Việt Nam (1.000.000)
+        // Cần loại bỏ tất cả dấu chấm phân cách hàng nghìn
+        if ((cleaned.match(/\./g) || []).length > 1) {
+            cleaned = cleaned.replace(/\./g, ""); // Loại bỏ tất cả dấu chấm
+        }
+        
         if (!cleaned) return 0;
         
         const num = Number(cleaned);
