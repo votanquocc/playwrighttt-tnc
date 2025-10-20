@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "outDir": "./dist", //nơi lưu file sau khi compile
+    "rootDir": ".", //nơi cần compile
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@readers/*": ["readers/*"],
+      "@mappers/*": ["mappers/*"],
+      "@models/*": ["models/*"],
+      "@exporters/*": ["exporters/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
