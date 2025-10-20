@@ -1,5 +1,6 @@
 import { test as base, Page } from '@playwright/test';//test as base để đổi tên test gốc của playwright
 import { HomePage } from '../src/pages/HomePage';
+import { captureFailureScreenshot } from '../listener/ScreenShotOnFail.listener';
 
 type TestFixtures = {
   page: Page;
@@ -33,6 +34,10 @@ export const basetest = base.extend<TestFixtures>({
   
   await use(page);
 },
+});
+
+basetest.afterEach(async ({ page }, testInfo) => {
+  await captureFailureScreenshot(page, testInfo);
 });
 
 export { expect } from '@playwright/test';
