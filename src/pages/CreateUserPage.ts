@@ -4,6 +4,7 @@ export class CreateUserPage {
     readonly newusernameInput: Locator;
     readonly newemailInput: Locator;
     readonly newpasswordInput: Locator;
+    readonly createuserButton: Locator;
     readonly createnewButton: Locator;
 
     constructor(page: Page) {
@@ -11,11 +12,12 @@ export class CreateUserPage {
         this.newusernameInput = page.locator('//input[@id="js-popup-register-name"]');
         this.newemailInput = page.locator('//input[@id="js-popup-register-email"]');
         this.newpasswordInput = page.locator('//input[@id="js-popup-register-password"]');
-        this.createnewButton = page.locator('//a[contains(@onclick,"register")]');
+        this.createuserButton = page.locator('//a[contains(@onclick,"register")]');
+        this.createnewButton = page.locator('//a[contains(@onclick,"Register()")]');
     }
 
     async navigateToCreateUser() {
-        await this.createnewButton.click();
+        await this.createuserButton.click();
     }
 
     async inputCreateNewCredentials(newusername:string, newemail: string, newpassword: string) {

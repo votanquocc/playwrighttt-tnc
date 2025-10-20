@@ -1,28 +1,38 @@
-import { basetest, expect } from '../../../fixtures/BaseTest';
-import { readExcelData } from '../../../utils/ExcelReader';
-import { LoginPage } from '../../../src/pages/LoginPage';
-import { CreateUserPage } from '../../../src/pages/CreateUserPage';
-import path from 'path';
+import {basetest, expect} from '../../../fixtures/baseTest';
+import {CreateUserPage} from '../../../src/pages/CreateUserPage';
+import {LoginPage} from '../../../src/pages/LoginPage';
+import {User} from '../../../src/model/users';
+import * as fs from 'fs';
+import * as path from 'path';
 
-let users: any[] = [];
+basetest.describe('Create New User Tests', () => {
+  let createUserPage: CreateUserPage;
+  let loginPage: LoginPage;
 
-basetest.beforeAll(async () => {
-  const filePath = path.resolve(__dirname, '../../../src/data/userdata.xlsx');
-  users = await readExcelData(filePath, 'Sheet1');
-});
+  basetest.beforeEach(async ({page}) => {
+    createUserPage = new CreateUserPage(page);
+    loginPage = new LoginPage(page);
+  });
 
-basetest.describe('Create New User from Excel', () => {
-    basetest('Run dynamic user creation tests', async ({ page }) => {
-        for (const user of users) {
-            const loginPage = new LoginPage(page);
-            const createUserPage = new CreateUserPage(page);
+  // Load data
+  const testDataPath = path.join(__dirname, '../test-data/users.json');
+  const usersData = JSON.parse(fs.readFileSync(testDataPath, 'utf-8'));
+  const testUsers: User[] = usersData.map((data: any) => User.fromJSON(data));
 
-            await loginPage.navigateToAccount();
-            await createUserPage.navigateToCreateUser();
-            await createUserPage.inputCreateNewCredentials(user.username, user.email, user.password);
-            await createUserPage.clickCreateNewButton();
-
-            await expect(loginPage.loginTitle).toBeVisible();
-        };
+  // Dùng for...of với type
+  for (const user of testUsers) {
+    basetest(`Create user ${user.name}`, async () => {
+      await loginPage.navigateToAccount();
+      await createUserPage.navigateToCreateUser();
+      
+      await createUserPage.inputCreateNewCredentials(
+        user.name, 
+        user.email, 
+        user.password
+      );
+      
+      await createUserPage.clickCreateNewButton();
+      await expect(loginPage.loginTitle).toBeVisible();
     });
+  }
 });
