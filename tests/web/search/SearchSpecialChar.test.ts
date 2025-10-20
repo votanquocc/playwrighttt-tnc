@@ -1,4 +1,4 @@
-import { basetest, expect } from '../../../fixtures/BaseTest';
+import { basetest, expect } from '../../../fixtures/baseTest';
 import { SearchPage } from '../../../src/pages/SearchPage';
 
 basetest('SearchwithSpecialChar', async ({ page }) => {
