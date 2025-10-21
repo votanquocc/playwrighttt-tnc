@@ -38,7 +38,7 @@ Tương tự như `@BeforeMethod` và `@BeforeClass` trong **TestNG**, nhưng **
 
 Trong Playwright Test, **use** là nơi bạn cấu hình môi trường mặc định cho các bài kiểm thử.Nó cho phép bạn thiết lập các **Giá trị mặc định** cho các fixture — tức là **Các biến được inject** vào test như page, browser, context, v.v.
 
-## 🔍 Mục đích của `use`
+## 🔍 Mục đích của Fixtures
 
 - **Thiết lập môi trường test mặc định**: như trình duyệt, kích thước màn hình, `baseURL`, chế độ `headless`, v.v.
 - **Tùy chỉnh hành vi test**: như chụp ảnh màn hình khi lỗi, quay video, bật trace để debug.
@@ -46,7 +46,7 @@ Trong Playwright Test, **use** là nơi bạn cấu hình môi trường mặc �
 
 ---
 
-## 🧩 Các fixture mặc định có thể cấu hình qua `use`
+## 🧩 Các fixture mặc định có thể cấu hình qua
 
 | Tên fixture    | Kiểu dữ liệu / Giá trị hợp lệ         |
 | --------------- | -------------------------------------------- |
