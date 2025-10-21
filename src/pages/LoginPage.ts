@@ -15,11 +15,11 @@ export class LoginPage {
         this.passwordInput = page.locator('//input[@id="js-login-password"]');
         this.loginTitle = page.locator('//div[contains(text(),"Đăng Nhập")]');
     }
-    async navigateToAccount() {
+    async navigateToLogin() {
         await this.accountButton.click();
     }
     
-    async inputCreateCredentials(email: string, password: string) {
+    async inputLoginCredentials(email: string, password: string) {
         await this.emailInput.fill(email);
         await this.passwordInput.fill(password);
     }
