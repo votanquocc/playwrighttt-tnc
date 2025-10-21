@@ -15,14 +15,14 @@ basetest.describe('Create New User Tests', () => {
   });
 
   // Load data
-  const testDataPath = path.join(__dirname, '../test-data/users.json');
+  const testDataPath = path.join(__dirname, '../../../src/data/json/users.json');
   const usersData = JSON.parse(fs.readFileSync(testDataPath, 'utf-8'));
   const testUsers: User[] = usersData.map((data: any) => User.fromJSON(data));
 
   // Dùng for...of với type
   for (const user of testUsers) {
     basetest(`Create user ${user.name}`, async () => {
-      await loginPage.navigateToAccount();
+      await loginPage.navigateToLogin();
       await createUserPage.navigateToCreateUser();
       
       await createUserPage.inputCreateNewCredentials(
