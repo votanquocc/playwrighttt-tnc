@@ -4,9 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 basetest.describe('Create New User Tests', () => {
   // Load data
-  const testDataPath = path.join(__dirname, '../../../src/data/json/users.json');
-  const usersData = JSON.parse(fs.readFileSync(testDataPath, 'utf-8'));
-  const testUsers: User[] = usersData.map((data: any) => User.fromJSON(data));
+  const testUsers: User[] = User.loadUsers();
 
   // Dùng for...of với type
   for (const user of testUsers) {
