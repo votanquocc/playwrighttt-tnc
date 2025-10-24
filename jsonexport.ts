@@ -2,7 +2,7 @@ import { readExcelData } from './utils/ExcelReader';
 import { UserMapper } from './mappers/user-mapper';
 import { JsonExporter } from './utils/JsonExporter';
 
-async function main() {
+export async function Json() {
   try {
     // Flow: Excel Reader → Mapper → JSON → User Model
     console.log('=== BẮT ĐẦU XỬ LÝ ===');
@@ -17,7 +17,7 @@ async function main() {
     const users = UserMapper.mapToUsers(rawData);
     console.log(`👥 Đã map thành ${users.length} users`);
 
-    // 3. Xuất JSON - SỬA ĐƯỜNG DẪN Ở ĐÂY
+    // 3. Xuất JSON
     console.log('💾 Đang xuất JSON...');
     JsonExporter.exportToFile(users, './src/data/json/users.json');
     
@@ -27,5 +27,6 @@ async function main() {
     console.error('❌ Lỗi:', error);
   }
 }
-
-main();
+if (require.main === module) {
+  Json();
+}

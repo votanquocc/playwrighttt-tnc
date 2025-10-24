@@ -59,6 +59,7 @@ export class ProductDetailPage {
     }
 
     async addToCartClick(){
+        await this.addToCartButton.isVisible();
         await this.addToCartButton.click();
     }
 }

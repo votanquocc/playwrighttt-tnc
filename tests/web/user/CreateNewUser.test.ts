@@ -1,19 +1,8 @@
-import {basetest, expect} from '../../../fixtures/baseTest';
-import {CreateUserPage} from '../../../src/pages/CreateUserPage';
-import {LoginPage} from '../../../src/pages/LoginPage';
+import {basetest, expect} from '../../../fixtures/BaseTest';
 import {User} from '../../../src/model/users';
 import * as fs from 'fs';
 import * as path from 'path';
-
 basetest.describe('Create New User Tests', () => {
-  let createUserPage: CreateUserPage;
-  let loginPage: LoginPage;
-
-  basetest.beforeEach(async ({page}) => {
-    createUserPage = new CreateUserPage(page);
-    loginPage = new LoginPage(page);
-  });
-
   // Load data
   const testDataPath = path.join(__dirname, '../../../src/data/json/users.json');
   const usersData = JSON.parse(fs.readFileSync(testDataPath, 'utf-8'));
@@ -21,7 +10,7 @@ basetest.describe('Create New User Tests', () => {
 
   // Dùng for...of với type
   for (const user of testUsers) {
-    basetest(`Create user ${user.name}`, async () => {
+    basetest(`Create user ${user.name}`, async ({loginPage, createUserPage}) => {
       await loginPage.navigateToLogin();
       await createUserPage.navigateToCreateUser();
       

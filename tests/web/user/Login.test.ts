@@ -1,16 +1,13 @@
-import { basetest, expect } from '../../../fixtures/baseTest';
+import { basetest, expect } from '../../../fixtures/BaseTest';
 import { User } from '../../../src/model/users';
-import * as fs from 'fs';
-import * as path from 'path';
 
-basetest.describe('Login User Tests', () => {
+
+basetest.describe.parallel('Login User Tests', () => {
     // Load data
-    const testDataPath = path.join(__dirname, '../../../src/data/json/users.json');
-    const usersData = JSON.parse(fs.readFileSync(testDataPath, 'utf-8'));
-    const testUsers: User[] = usersData.map((data: any) => User.fromJSON(data));
+      const testUsers: User[] = User.loadUsers();
 
     // Dùng for...of với type
-    for (const user of testUsers) {
+    testUsers.forEach((user,index) => {
         basetest(`Login user ${user.name}`, async ({ loginPage, userPage}) => {
             await loginPage.navigateToLogin();
             await loginPage.inputLoginCredentials(
@@ -20,5 +17,5 @@ basetest.describe('Login User Tests', () => {
             await loginPage.clickLoginButton();
             await expect(userPage.logoutButton).toBeVisible();
         });
-    }
+    });
 });
