@@ -14,6 +14,8 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   timeout: 1800000,
   testDir: './tests',
+
+  globalTeardown: require.resolve('./utils/AllureReport'),
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -22,9 +24,12 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. Set to 1 locally to avoid spawning multiple
     browser processes for the same project (useful during local debugging). */
-  workers: process.env.CI ? 1 : 1,
+  workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [
+    // ['html', { outputFolder: 'playwright-report', open: 'never' }],
+    ['allure-playwright']
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
@@ -34,7 +39,6 @@ export default defineConfig({
     trace: 'on-first-retry',
     actionTimeout: 180000, // cho từng hành động như click, fill, waitForSelector
     navigationTimeout: 180000,
-    viewport: { width: 1920, height: 1080 },
   },
 
   /* Configure projects for major browsers */
@@ -61,7 +65,6 @@ export default defineConfig({
       headless: false,
       },
     },
-
     // {
     //   name: 'webkit',
     //   use: { ...devices['Desktop Safari'],
