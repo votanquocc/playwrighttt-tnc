@@ -1,22 +1,29 @@
 import { test as base, Page } from '@playwright/test';
 import { captureFailureScreenshot } from '../listener/ScreenShotOnFail.listener';
 
+import { handlePopups } from '../utils/PopupHandler';
+
+import { GeneralPage } from '../src/components/General.page' ;
+
 import { HomePage } from '../src/pages/HomePage';
 import { LoginPage } from '../src/pages/LoginPage';
-import { CreateUserPage } from '../src/pages/CreateUserPage';
+import { CreateUserPage } from '../src/pages/CreateUser.page';
 import { UserPage } from '../src/pages/UserPage';
 import { SearchPage } from '../src/pages/SearchPage';
 import { ProductDetailPage } from '../src/pages/ProductDetailPage';
+import { CartPage } from '../src/pages/Cart.page';
 
 // Định nghĩa đầy đủ các fixtures
 type BaseFixtures = {
   page: Page;
+  generalPage: GeneralPage;
   homePage: HomePage;
   loginPage: LoginPage;
   createUserPage: CreateUserPage;
   userPage: UserPage;
   searchPage: SearchPage;
   productDetailPage: ProductDetailPage;
+  cartPage: CartPage;
 };
 
 export const basetest = base.extend<BaseFixtures>({
@@ -34,12 +41,15 @@ export const basetest = base.extend<BaseFixtures>({
   },
 
   // Các page objects - được khởi tạo tự động
+  generalPage: async({ page }, use) => {
+    const generalPage = new GeneralPage( page);
+    // Xử lý popup trước khi sử dụng homePage
+    await handlePopups(generalPage);
+    await use(generalPage);
+  },
+
   homePage: async ({ page }, use) => {
     const homePage = new HomePage(page);
-    
-    // Xử lý popup trước khi sử dụng homePage
-    await handlePopups(homePage);
-    
     await use(homePage);
   },
 
@@ -67,49 +77,12 @@ export const basetest = base.extend<BaseFixtures>({
     const productDetailPage = new ProductDetailPage(page);
     await use(productDetailPage);
   },
-});
 
-// Hàm helper để xử lý popup
-async function handlePopups(homePage: HomePage): Promise<void> {
-  try {
-    // Chờ một chút để popup có thời gian xuất hiện
-    await homePage.page.waitForTimeout(3000);
-    
-    // Debug thông tin popup
-    const isChatVisible = await homePage.chatRight.isVisible().catch(() => false);
-    const isWhiteVisible = await homePage.whitePopupRight.isVisible().catch(() => false);
-    
-    console.log(`Chat popup visible: ${isChatVisible}`);
-    console.log(`White popup visible: ${isWhiteVisible}`);
-    
-    // Đóng popup theo thứ tự ưu tiên
-    if (isWhiteVisible) {
-      console.log('Đang đóng white popup...');
-      await homePage.closeWhitePopupRightIfVisible();
-      await homePage.page.waitForTimeout(1000); // Chờ animation
-    }
-    
-    if (isChatVisible) {
-      console.log('Đang đóng chat popup...');
-      await homePage.closeChatRightPopupIfVisible();
-      await homePage.page.waitForTimeout(1000); // Chờ animation
-    }
-    
-    // Kiểm tra lại sau khi đóng
-    const chatStillVisible = await homePage.chatRight.isVisible().catch(() => false);
-    const whiteStillVisible = await homePage.whitePopupRight.isVisible().catch(() => false);
-    
-    if (chatStillVisible || whiteStillVisible) {
-      console.log('Popup vẫn còn visible sau khi đóng, thử cách khác...');
-      // Có thể thử click ra ngoài popup
-      await homePage.page.mouse.click(10, 10);
-    }
-    
-  } catch (error) {
-    console.warn('Lỗi khi xử lý popup:', error);
-    // Tiếp tục test ngay cả khi xử lý popup thất bại
-  }
-}
+  cartPage:async({page}, use) => {
+    const cartPage = new CartPage( page);
+    await use(cartPage);
+  },
+});
 
 basetest.afterEach(async ({ page }, testInfo) => {
   await captureFailureScreenshot(page, testInfo);

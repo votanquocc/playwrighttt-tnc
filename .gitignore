@@ -8,3 +8,6 @@ node_modules/
 /playwright/.auth/
 /screenshots/
 .continue/
+allure-report
+allure-results
+allure-history
