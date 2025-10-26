@@ -1,24 +1,30 @@
 import { Page,Locator } from "@playwright/test";
-export class ProductDetailPage {
+export class LoginPage {
     readonly page: Page;
     readonly accountButton: Locator;
     readonly loginButton: Locator;
+    readonly emailInput: Locator;
+    readonly passwordInput: Locator;
+    readonly loginTitle: Locator;
 
     constructor(page: Page) {
         this.page = page;
         this.accountButton = page.locator('//a[contains(@class,"item account")]');
         this.loginButton = page.locator('//a[@class="btn-submit"]');
+        this.emailInput = page.locator('//input[@id="js-login-email"]');
+        this.passwordInput = page.locator('//input[@id="js-login-password"]');
+        this.loginTitle = page.locator('//div[contains(text(),"Đăng Nhập")]');
     }
     async navigateToLogin() {
         await this.accountButton.click();
     }
     
-    async clickLoginButton() {
-        await this.loginButton.click();
+    async inputLoginCredentials(email: string, password: string) {
+        await this.emailInput.fill(email);
+        await this.passwordInput.fill(password);
     }
 
-    async inputCredentials(email: string, password: string) {
-        await this.page.fill('input[name="email"]', email);
-        await this.page.fill('input[name="password"]', password);
+    async clickLoginButton() {
+        await this.loginButton.click();
     }
 }
