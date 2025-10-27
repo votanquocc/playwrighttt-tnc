@@ -1,6 +1,5 @@
 import { basetest, expect } from "../../../fixtures/BaseTest";
 import { User } from "../../../src/model/users";
-import { HomePage } from "../../../src/pages/HomePage";
 
 basetest('', async({ loginPage, generalPage, homePage, productDetailPage, cartPage, page}) => {
     const testUsers: User[] = User.loadUsers();
