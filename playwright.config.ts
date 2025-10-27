@@ -47,7 +47,7 @@ export default defineConfig({
       name: 'chrome',
       use: { ...devices['Desktop Chrome'],
       channel: 'chrome',
-      headless: false,
+      headless: true,
       },
     },
 
@@ -55,14 +55,14 @@ export default defineConfig({
       name: 'edge',
       use: { ...devices['Desktop Edge'],
       channel: 'msedge',
-      headless: false,
+      headless: true,
       },
     },
 
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'],
-      headless: false,
+      headless: true,
       },
     },
     // {
