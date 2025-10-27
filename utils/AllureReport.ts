@@ -35,6 +35,6 @@ export default async () => {
 
   backupHistory();
 
-  console.log('🚀 Đang mở Allure Report...');
-  execSync(`npx allure open ${reportPath}`, { stdio: 'inherit' });
+  // console.log('🚀 Đang mở Allure Report...');
+  // execSync(`npx allure open ${reportPath}`, { stdio: 'inherit' });
 };
